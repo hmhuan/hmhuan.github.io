@@ -5,9 +5,29 @@ h1 {
 p {
 	color: violet;
 }
+#main{
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+#head{
+    height: 100px;
+    background-color: #F5F5F5;
+    border-bottom: 1px solid #CDCDCD;
+    margin-bottom:5px;
+}
+#content{
+    /*border: 1px solid #CDCDCD;*/
+	min-height: 470px;
+    float:left;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
 #footer{
+	clear: both;
     background-color:#ddd;
     font-size:16px;
     text-align:center;
-    padding:18px;
+    padding: 18px;
 }
