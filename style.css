@@ -118,6 +118,7 @@ p {
 }
 #footer{
 	  clear: both;
+	position: relative;
     background-color: #1c5c59;
     font-size: 15px;
     text-align:center;
