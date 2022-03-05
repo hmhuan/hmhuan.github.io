@@ -3,7 +3,7 @@ const context = canvas.getContext('2d');
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-const maxParticles = 32;
+// const maxParticles = 32;
 
 function Particle(x, y, radius, color, velocity) {
     this.x = x;
@@ -11,8 +11,7 @@ function Particle(x, y, radius, color, velocity) {
     this.radius = radius;
     this.color = color;
     this.velocity = velocity;
-    this.deltaX = 1;
-    this.deltaY = 1;
+    this.ttl = 200;
 
     this.draw = () => {
         context.beginPath();
@@ -32,6 +31,7 @@ function Particle(x, y, radius, color, velocity) {
 function Star(numberOfParticles, x, y) {
     this.numberOfParticles = numberOfParticles;
     this.particles = [];
+    this.ttl = 200;
     const color = randomColor();
     const radians = Math.PI * 2 / this.numberOfParticles;
 
@@ -40,13 +40,14 @@ function Star(numberOfParticles, x, y) {
             x: Math.cos(radians * i),
             y: Math.sin(radians * i),
         }
-        this.particles.push(new Particle(x, y, 10, color, velocity));
+        this.particles.push(new Particle(x, y, 5, color, velocity));
     }
 
     this.update = () => {
         this.particles.forEach(particle => {
             particle.update();
         });
+        this.ttl -= 1;
     }
 }
 
@@ -65,9 +66,6 @@ canvas.onclick = (event) => {
     const newStar= getPoint(event);
     if (newStar !== undefined) {
         stars.push(newStar);
-        if (stars.length > maxParticles) {
-            stars.shift();
-        }
     }
 }
 
@@ -75,10 +73,13 @@ function animate() {
     requestAnimationFrame(animate);
     context.fillStyle = "rgba(0, 0, 0, 0.05)";
     context.fillRect(0, 0, canvas.width, canvas.height);
-    stars.forEach(star => {
-        star.update();        
+    stars.forEach((star, index) => {
+        if (star.ttl == 0) {
+            stars.splice(index, 1);
+        }
+        star.update();      
     });
+    console.log(stars.length);
 }
-
 
 animate();
