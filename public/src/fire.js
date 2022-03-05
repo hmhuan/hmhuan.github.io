@@ -3,13 +3,14 @@ const context = canvas.getContext('2d');
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-const maxParticles = 10;
+const maxParticles = 32;
 
-function Particle(x, y, radius, color) {
+function Particle(x, y, radius, color, velocity) {
     this.x = x;
     this.y = y;
     this.radius = radius;
     this.color = color;
+    this.velocity = velocity;
     this.deltaX = 1;
     this.deltaY = 1;
 
@@ -23,42 +24,60 @@ function Particle(x, y, radius, color) {
 
     this.update = () => {
         this.draw();
-        if (this.x >= (canvas.width - this.radius) || this.x <= this.radius) {
-            this.deltaX = -this.deltaX;
-        }
-        this.x += this.deltaX * 2;
-
-        if (this.y >= canvas.height - this.radius || this.y <= this.radius) {
-            this.deltaY = -this.deltaY;
-        }
-        this.y += this.deltaY * 2;
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
     }
 }
 
-const particles = [];
+function Star(numberOfParticles, x, y) {
+    this.numberOfParticles = numberOfParticles;
+    this.particles = [];
+    const color = randomColor();
+    const radians = Math.PI * 2 / this.numberOfParticles;
+
+    for (let i = 0; i < this.numberOfParticles; i++) {
+        const velocity = {
+            x: Math.cos(radians * i),
+            y: Math.sin(radians * i),
+        }
+        this.particles.push(new Particle(x, y, 10, color, velocity));
+    }
+
+    this.update = () => {
+        this.particles.forEach(particle => {
+            particle.update();
+        });
+    }
+}
+
+const stars = [];
+
+function randomColor() {
+    return  "#"+ Math.floor(Math.random() * 16777215).toString(16);
+}
 
 function getPoint(event) {
-    const randomColor = "#"+ Math.floor(Math.random() * 16777215).toString(16);
-    return new Particle(event.clientX, event.clientY, 10, randomColor);
+    const numberOfParticles = Math.floor(Math.random() * 20) + 10;
+    return new Star(numberOfParticles, event.clientX, event.clientY);
 }
 
 canvas.onclick = (event) => {
-    const newParticle = getPoint(event);
-    if (newParticle !== undefined) {
-        particles.push(newParticle);
-        if (particles.length > maxParticles) {
-            particles.shift();
+    const newStar= getPoint(event);
+    if (newStar !== undefined) {
+        stars.push(newStar);
+        if (stars.length > maxParticles) {
+            stars.shift();
         }
     }
 }
 
 function animate() {
-    context.clearRect(0, 0, canvas.width, canvas.height);
     requestAnimationFrame(animate);
-    particles.forEach(particle => {
-        particle.update();        
+    context.fillStyle = "rgba(0, 0, 0, 0.05)";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(star => {
+        star.update();        
     });
-    console.log(particles);
 }
 
 
