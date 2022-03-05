@@ -6,27 +6,16 @@
 	<title>Home</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="./public/css/style.css">
 </head>
 <body class="body">
-    <div id="head">
-	<div id="menu">
-		<ul>
-			<li><a href="index.html">Home</a></li>
-			<li><a href="#">News</a></li>
-			<li><a href="#">About</a></li>
-			<li><a href="#">Contact</a></li>
-		</ul>
-	</div>
-    </div>
     <div id="content">
+		<canvas id="canvas" onclick="getPoint(event)"></canvas>
 		<div class="back"></div>
 		<div class="heart"></div>
     </div>
-    
-    <!-- <div id="footer"></div> -->
-</body>
-
-<footer class="footer"><div id="footer"></div></footer>
-<script type = "text/JavaScript" src="./js.js"></script>
+	<div id="footer"></div>
+</body>	
+<script src="./public/index.js"></script>
+<script src="./public/src/fire.js"></script>
 </html>
